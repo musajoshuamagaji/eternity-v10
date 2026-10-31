@@ -1,0 +1,15 @@
+{
+  "name": "eternity-v10-private-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Private access-key dashboard with Supabase-backed authorization",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7"
+  }
+}

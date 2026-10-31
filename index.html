@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#09070b">
+  <title>ETERNITY V10 — Private Console</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <main id="loginView" class="login-shell">
+    <section class="login-card glass">
+      <div class="brand-mark">E<span>V10</span></div>
+      <div class="eyebrow">PRIVATE CONTROL SYSTEM</div>
+      <h1>ETERNITY <span>V10</span></h1>
+      <p class="muted">Restricted access. Enter your private access key to continue.</p>
+      <form id="loginForm">
+        <label for="accessKey">ACCESS KEY</label>
+        <input id="accessKey" type="password" autocomplete="current-password" placeholder="Enter access key" required maxlength="256">
+        <button class="primary-btn" type="submit"><span>UNLOCK CONSOLE</span><b>↗</b></button>
+      </form>
+      <p id="loginMessage" class="message" role="status"></p>
+      <div class="login-foot"><span class="pulse"></span> SERVER-SIDE KEY VALIDATION <span class="dot">•</span> ENCRYPTED SESSION COOKIE</div>
+    </section>
+  </main>
+
+  <div id="appView" class="app hidden">
+    <header class="topbar">
+      <a class="brand" href="#"><span class="brand-icon">E</span><span>ETERNITY <b>V10</b><small>PRIVATE CONSOLE</small></span></a>
+      <div class="top-actions"><span class="status-chip"><i></i> SESSION ACTIVE</span><button id="refreshBtn" class="icon-btn" aria-label="Refresh">⟳</button><button id="logoutBtn" class="icon-btn" aria-label="Log out">⇥</button></div>
+    </header>
+    <div class="layout">
+      <aside class="sidebar glass">
+        <div class="side-label">WORKSPACE</div>
+        <button class="nav-item active" data-page="overview"><span>⌂</span> Overview</button>
+        <button class="nav-item" data-page="keys"><span>⚿</span> Access Keys</button>
+        <button class="nav-item" data-page="activity"><span>≋</span> Activity Logs</button>
+        <button class="nav-item" data-page="groups"><span>◎</span> Group ID Lookup</button>
+        <button class="nav-item" data-page="bots"><span>⌁</span> Bot Status</button>
+        <div class="sidebar-bottom"><div class="mini-shield">◆</div><b>OWNER CONSOLE</b><small>Protected by server authorization</small></div>
+      </aside>
+      <section class="content">
+        <div class="page-head"><div><div class="eyebrow" id="pageEyebrow">SYSTEM OVERVIEW</div><h2 id="pageTitle">Command Center</h2><p id="pageSubtitle" class="muted">Monitor your private workspace.</p></div><div class="live-tag"><i></i> LIVE CONSOLE</div></div>
+        <div id="alertBox" class="alert hidden" role="status"></div>
+        <section id="overviewPage" class="page">
+          <div class="stat-grid">
+            <article class="stat-card glass"><div class="stat-label">ACCESS KEYS</div><strong id="statKeys">—</strong><small>Created in your workspace</small><span class="stat-icon cyan">⚿</span></article>
+            <article class="stat-card glass"><div class="stat-label">ACTIVE KEYS</div><strong id="statActive">—</strong><small>Not revoked or expired</small><span class="stat-icon purple">◈</span></article>
+            <article class="stat-card glass"><div class="stat-label">RECENT EVENTS</div><strong id="statEvents">—</strong><small>Last 24 hours</small><span class="stat-icon red">≋</span></article>
+            <article class="stat-card glass"><div class="stat-label">BOT STATUS</div><strong id="statBots">UNKNOWN</strong><small>Configure a real bot health endpoint to verify</small><span class="stat-icon green">⌁</span></article>
+          </div>
+          <div class="feature-grid">
+            <button class="feature-card execute-card" data-goto="keys"><div><span class="eyebrow">OWNER ACTION</span><h3>Access Key Manager</h3><p>Create, expire, and revoke keys.</p></div><span class="feature-symbol">⚿</span></button>
+            <button class="feature-card" data-goto="groups"><div><span class="eyebrow">TOOLS</span><h3>Group ID Lookup</h3><p>Inspect and record a group identifier.</p></div><span class="feature-symbol cyan">◎</span></button>
+            <button class="feature-card" data-goto="bots"><div><span class="eyebrow">CONNECTIONS</span><h3>Bot Connection Status</h3><p>View configured health-check status.</p></div><span class="feature-symbol green">⌁</span></button>
+          </div>
+          <div class="panel glass"><div class="panel-head"><div><h3>Recent Activity</h3><p class="muted">Latest security events</p></div><button class="subtle-btn" data-goto="activity">VIEW ALL ↗</button></div><div id="recentEvents" class="event-list"><div class="empty">Loading activity…</div></div></div>
+        </section>
+
+        <section id="keysPage" class="page hidden">
+          <div class="panel glass">
+            <div class="panel-head"><div><h3>Create access key</h3><p class="muted">The key is shown once. Store it safely before closing this message.</p></div><span class="pill red-pill">OWNER ONLY</span></div>
+            <form id="createKeyForm" class="inline-form">
+              <div class="field"><label for="keyLabel">LABEL</label><input id="keyLabel" placeholder="e.g. Team member 01" maxlength="80" required></div>
+              <div class="field"><label for="keyDays">VALID FOR</label><select id="keyDays"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option><option value="90">90 days</option><option value="365">365 days</option></select></div>
+              <button class="primary-btn compact" type="submit">GENERATE KEY <b>＋</b></button>
+            </form>
+            <div id="newKeyResult" class="key-result hidden"><div><b>New key — copy it now</b><p class="muted">This value will not be displayed again.</p><code id="newKeyValue"></code></div><button id="copyKeyBtn" class="subtle-btn">COPY KEY</button></div>
+          </div>
+          <div class="panel glass"><div class="panel-head"><div><h3>Managed keys</h3><p class="muted">Revoke access immediately when needed.</p></div><button id="reloadKeysBtn" class="subtle-btn">↻ REFRESH</button></div><div id="keysTable" class="table-wrap"><div class="empty">Loading keys…</div></div></div>
+        </section>
+
+        <section id="activityPage" class="page hidden">
+          <div class="panel glass"><div class="panel-head"><div><h3>Security activity</h3><p class="muted">Recent successful and rejected access events.</p></div><button id="reloadLogsBtn" class="subtle-btn">↻ REFRESH</button></div><div id="logsTable" class="table-wrap"><div class="empty">Loading logs…</div></div></div>
+        </section>
+
+        <section id="groupsPage" class="page hidden">
+          <div class="panel glass"><div class="panel-head"><div><h3>Group ID Lookup</h3><p class="muted">Validate and save a group identifier for your own records. This does not join or contact any group.</p></div><span class="pill cyan-pill">LOCAL TOOL</span></div>
+            <form id="groupForm" class="lookup-form"><label for="groupId">GROUP IDENTIFIER</label><input id="groupId" placeholder="Enter group ID or identifier" required maxlength="180"><button class="primary-btn compact" type="submit">CHECK FORMAT <b>↗</b></button></form>
+            <div id="groupResult" class="result-box hidden"></div>
+          </div>
+        </section>
+
+        <section id="botsPage" class="page hidden">
+          <div class="panel glass"><div class="panel-head"><div><h3>Bot connection status</h3><p class="muted">A truthful status requires a health-check URL from your bot server.</p></div><span class="pill amber-pill">CONFIGURATION REQUIRED</span></div>
+            <div class="bot-status-card"><div class="bot-orb">⌁</div><div><h3 id="botStatusTitle">Not configured</h3><p id="botStatusText" class="muted">No BOT_HEALTH_URL has been set in Vercel yet. The dashboard will not pretend a bot is online without a real check.</p></div></div>
+            <button id="checkBotBtn" class="subtle-btn">CHECK STATUS ↻</button>
+          </div>
+        </section>
+        <footer>ETERNITY V10 <span>•</span> PRIVATE ADMINISTRATION INTERFACE <span>•</span> KEEP YOUR KEYS SECRET</footer>
+      </section>
+    </div>
+    <nav class="mobile-nav">
+      <button class="nav-item active" data-page="overview"><span>⌂</span><small>Home</small></button><button class="nav-item" data-page="keys"><span>⚿</span><small>Keys</small></button><button class="nav-item" data-page="activity"><span>≋</span><small>Logs</small></button><button class="nav-item" data-page="groups"><span>◎</span><small>Groups</small></button><button class="nav-item" data-page="bots"><span>⌁</span><small>Bots</small></button>
+    </nav>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
